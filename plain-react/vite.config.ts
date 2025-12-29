@@ -34,6 +34,22 @@ const swcWithVitePluginCompiler = defineConfig({
   ],
 })
 
+/* React SWC plugin + React Compiler + manual sourcemaps enabled. This DOES preserve original source code maps.
+ */
+const swcWithVitePluginCompilerManualSourceMaps = defineConfig({
+  plugins: [
+    reactSwc(),
+    babel({
+      filter: /\.[jt]sx?$/,
+      babelConfig: {
+        sourceMaps: true,
+        presets: ["@babel/preset-typescript"],
+        plugins: ["babel-plugin-react-compiler"],
+      },
+    }),
+  ],
+})
+
 /* Default React plugin + React Compiler. This DOES preserve original source code maps.
  * Note the addition of the filter for js/ts/jsx/tsx files -- without it, the compiler doesn't run.
  * Additionally, results in processing the whole React Client package within React Compiler,
@@ -52,4 +68,4 @@ const defaultWithVitePluginCompiler = defineConfig({
   ],
 })
 
-export default defaultWithVitePluginCompiler;
+export default swcWithVitePluginCompilerManualSourceMaps;
